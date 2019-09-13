@@ -15,7 +15,7 @@ setsmArea2ColumnIndex = 11;
 
 sheets = functions.getExcelSheets(filenameSetsm);
 
-for i=1:1%numel(sheets)-1
+for i=1:numel(sheets)-1
     sheet1 = sheets{i};
     sheet2 = sheets{i+1};
     
