@@ -130,7 +130,20 @@ for i=1:numel(sites)
         end
         
         scatter(cell2mat(plotX), cell2mat(plotY));
-        refline;
+        ylim([0, max(max(cell2mat(plotX)), max(cell2mat(plotY)))+max(max(plotX{1}), max(plotY{1}))]);
+        xlim([0, max(max(cell2mat(plotX)), max(cell2mat(plotY)))+max(max(plotX{1}), max(plotY{1}))]);
+        hline = refline;
+        hlineX = hline.XData;
+        hlineY = hline.YData;
+        slope=(hlineY(2)-hlineY(1))/(hlineX(2)-hlineX(1));
+        
+        if hlineX(1) == 0
+            text(hlineX(2)/2,hlineY(2)/2,append('y = ', num2str(hlineY(1)), ' + ', num2str(slope), 'x '));
+        else
+            text(hlineX(2)/2,hlineY(2)/2,append('y = ', num2str(hlineY(1)), ' + ', num2str(slope), '(x - ', num2str(hlineX(1)), ')'));
+        end
+
+        text(hlineX(2)/2,hlineY(2)/3, append('n = ', num2str(length(plotX))))
         
         hold on
         lineX = 1:max(cell2mat(plotX));
