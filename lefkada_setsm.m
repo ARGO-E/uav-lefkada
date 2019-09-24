@@ -154,6 +154,25 @@ for i=1:numel(sheets)-1
     
     text(hlineX(2)/2,hlineY(2)/3, append('n = ', num2str(length(plotX))))
     
+    ymean = mean(cell2mat(plotY));
+    totalSumSquares = 0;
+    for l=1:length(plotY)
+        totalSumSquares = totalSumSquares + (plotY{l}-ymean)^2;
+    end
+    
+    regressionSumSquares = 0;
+    for l=1:length(plotX)
+        regressionSumSquares = regressionSumSquares + ((hlineY(1) + slope * plotX{l}) - ymean )^2;
+    end
+    
+    residualSumSquares = 0;
+    for l=1:length(plotX)
+        residualSumSquares = residualSumSquares + (plotY{l} - (hlineY(1) + slope * plotX{l}) )^2;
+    end
+    
+    rSquared = 1 - residualSumSquares/totalSumSquares;
+    text(hlineX(2)/2,hlineY(2)/4, append('R^2 = ', num2str(rSquared)))
+    
     hold on
     lineX = 1:max(cell2mat(plotX));
     lineY = lineX;
