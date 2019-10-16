@@ -139,6 +139,8 @@ for i=1:numel(sheets)-1
     end
 
     scatter(cell2mat(plotX), cell2mat(plotY));
+    set(gca, 'YScale', 'log')
+    set(gca, 'XScale', 'log')
     ylim([0, max(max(cell2mat(plotX)), max(cell2mat(plotY)))+max(max(plotX{1}), max(plotY{1}))]);
     xlim([0, max(max(cell2mat(plotX)), max(cell2mat(plotY)))+max(max(plotX{1}), max(plotY{1}))]);
     hline = refline;
@@ -147,12 +149,13 @@ for i=1:numel(sheets)-1
     slope=(hlineY(2)-hlineY(1))/(hlineX(2)-hlineX(1));
   
     if hlineX(1) == 0
-        text(hlineX(2)/2,hlineY(2)/2,append('y = ', num2str(hlineY(1)), ' + ', num2str(slope), 'x '));
+        hlineX(1) = 0.01;
+        text(1,max(cell2mat(plotY)),append('y = ', num2str(hlineY(1)), ' + ', num2str(slope), 'x '));
     else
-        text(hlineX(2)/2,hlineY(2)/2,append('y = ', num2str(hlineY(1)), ' + ', num2str(slope), '(x - ', num2str(hlineX(1)), ')'));
+        text(1,max(cell2mat(plotY)),append('y = ', num2str(hlineY(1)), ' + ', num2str(slope), '(x - ', num2str(hlineX(1)), ')'));
     end
     
-    text(hlineX(2)/2,hlineY(2)/3, append('n = ', num2str(length(plotX))))
+    text(1,max(cell2mat(plotY))/2, append('n = ', num2str(length(plotX))))
     
     ymean = mean(cell2mat(plotY));
     totalSumSquares = 0;
@@ -171,7 +174,15 @@ for i=1:numel(sheets)-1
     end
     
     rSquared = 1 - residualSumSquares/totalSumSquares;
-    text(hlineX(2)/2,hlineY(2)/4, append('R^2 = ', num2str(rSquared)))
+    text(1,max(cell2mat(plotY))/4, append('R^2 = ', num2str(rSquared)))
+    
+    t = linspace(0,1,100);
+    hlineX = hlineX(1) + t*(hlineX(end) - hlineX(1));
+    hlineY = hlineY(1) + t*(hlineY(end) - hlineY(1));
+
+    hold on
+    plot(hlineX,hlineY)
+    hold off
     
     hold on
     lineX = 1:max(cell2mat(plotX));
